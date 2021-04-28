@@ -1,7 +1,12 @@
 package com.ibm.demo;
 
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,8 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/customers")
 public class DemoController {
 
-  @GetMapping
-  public ResponseEntity<String> helloWorld(){
-   return ResponseEntity.ok("Hello World");
-  }
+	private CustomerRepo repo;
+
+    public DemoController(CustomerRepo repo) {
+        this.repo = repo;
+    }
+    
+    @GetMapping
+    public ResponseEntity<Iterable<Customer>> findAllStorms() {
+        return ResponseEntity.ok(repo.findAll());
+    }
+
+    @GetMapping("/{stormId}")
+    public ResponseEntity<Customer> findById(@PathVariable long CustomerId) {
+        return ResponseEntity.ok(repo.findById(CustomerId).get());
+    }
+    
+    @PostMapping
+    public ResponseEntity<?> addNewStorm(@RequestBody Customer customer) {
+    	customer = repo.save(customer);
+        return ResponseEntity.created(URI.create("/api/v1/storms/" + customer.getId())).build();
+    }
 }
