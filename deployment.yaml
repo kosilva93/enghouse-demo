@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: enghouse-poc
+  name: enghouse-poc
+  namespace: demo-enghouse
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      run: enghouse-poc
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: enghouse-poc
+    spec:
+      containers:
+      - image: us.icr.io/kos-demo-enghouse/demo-enghouse:v1
+        imagePullPolicy: Always
+        name: enghouse-poc
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        args: ["--spring.application.json=$(BINDING)"]
+        env:
+        - name: BINDING
+          valueFrom:
+            secretKeyRef:
+              name: demo-secret
+              key: binding
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
