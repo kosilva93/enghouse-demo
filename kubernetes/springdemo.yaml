@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdemo
+  labels:
+    app: springdemo
+spec:
+  selector:
+    matchLabels:
+      app: springdemo
+  template:
+    metadata:
+      labels:
+        app: springdemo
+    spec:
+      containers:
+        - name: springdemo
+          image: __IMAGE__@__DIGEST__
+          ports:
+            - name: http-server
+              containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springdemo
+  labels:
+    app: springdemo
+spec:
+  ports:
+    - port: 8080
+      targetPort: http-server
+  selector:
+    app: springdemo
+  type: NodePort
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: springdemo
+  labels:
+    app: springdemo
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: springdemo
+    weight: 100
