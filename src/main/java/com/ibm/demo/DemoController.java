@@ -21,18 +21,18 @@ public class DemoController {
     }
     
     @GetMapping
-    public ResponseEntity<Iterable<Customer>> findAllStorms() {
+    public ResponseEntity<Iterable<Customer>> findAllCustomers() {
         return ResponseEntity.ok(repo.findAll());
     }
 
-    @GetMapping("/{stormId}")
-    public ResponseEntity<Customer> findById(@PathVariable long CustomerId) {
-        return ResponseEntity.ok(repo.findById(CustomerId).get());
+    @GetMapping("/{customerId}")
+    public ResponseEntity<Customer> findById(@PathVariable long customerId) {
+        return ResponseEntity.ok(repo.findById(customerId).get());
     }
     
     @PostMapping
-    public ResponseEntity<?> addNewStorm(@RequestBody Customer customer) {
+    public ResponseEntity<?> addNewCustomer(@RequestBody Customer customer) {
     	customer = repo.save(customer);
-        return ResponseEntity.created(URI.create("/api/v1/storms/" + customer.getId())).build();
+        return ResponseEntity.created(URI.create("/api/v1/customers/" + customer.getId())).build();
     }
 }

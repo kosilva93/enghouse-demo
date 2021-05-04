@@ -7,7 +7,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "customers")
+@Table(name = "Customers")
 public class Customer {
 
     @Id
@@ -15,18 +15,13 @@ public class Customer {
     @SequenceGenerator(name = "customers_id_generator", allocationSize = 1, initialValue = 10)
     private long id;
     private String firstName;
-    private String lastName;
     private String location;
-    private String companyName;
 
-    Customer() {
-    }
+    Customer() {}
 
-    public Customer(String firstName, String lastName, String location, String companyName) {
+    public Customer(String firstName, String location) {
         this.firstName = firstName;
-        this.lastName = lastName;
         this.location = location;
-        this.companyName = companyName;
     }
 
     public long getId() {
@@ -37,15 +32,7 @@ public class Customer {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
     public String getLocation() {
         return location;
-    }
-
-    public String getCompanyName() {
-        return companyName;
     }
 }
