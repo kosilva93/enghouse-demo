@@ -1,17 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "14"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"springdemo"},"name":"springdemo","namespace":"demo-enghouse"},"spec":{"selector":{"matchLabels":{"app":"springdemo"}},"template":{"metadata":{"labels":{"app":"springdemo"}},"spec":{"containers":[{"image":"us.icr.io/kos-demo-enghouse/demo-enghouse:1.0@sha256:b033682e56e351f7b16cdcdb087213e59454e0393be2f298ab6698e816163680","name":"springdemo","ports":[{"containerPort":8080,"name":"http-server"}]}]}}}}
+  creationTimestamp: "2021-04-28T19:36:49Z"
+  generation: 9
   labels:
-    run: enghouse-poc
-  name: enghouse-poc
+    app: springdemo
+  name: springdemo
   namespace: demo-enghouse
+  resourceVersion: "10290426"
+  selfLink: /apis/apps/v1/namespaces/demo-enghouse/deployments/springdemo
+  uid: 46eb2525-12f6-46ef-9056-bbd9e43b9683
 spec:
   progressDeadlineSeconds: 600
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      run: enghouse-poc
+      app: springdemo
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -21,24 +30,49 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        run: enghouse-poc
+        app: springdemo
     spec:
       containers:
-      - image: us.icr.io/kos-demo-enghouse/demo-enghouse:v1
-        imagePullPolicy: Always
-        name: enghouse-poc
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        args: ["--spring.application.json=$(BINDING)"]
+      - args:
+        - --spring.application.json=$(BINDING)
         env:
         - name: BINDING
           valueFrom:
             secretKeyRef:
-              name: demo-secret
               key: binding
+              name: binding-kos-enghouse-demo
+        image: us.icr.io/kos-demo-enghouse/demo-enghouse:1.0@sha256:b033682e56e351f7b16cdcdb087213e59454e0393be2f298ab6698e816163680
+        imagePullPolicy: IfNotPresent
+        name: springdemo
+        ports:
+        - containerPort: 8080
+          name: http-server
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  collisionCount: 5
+  conditions:
+  - lastTransitionTime: "2021-05-04T19:57:43Z"
+    lastUpdateTime: "2021-05-04T19:57:43Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2021-05-04T02:33:30Z"
+    lastUpdateTime: "2021-05-04T20:02:16Z"
+    message: ReplicaSet "springdemo-74c49cc8fb" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 9
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
