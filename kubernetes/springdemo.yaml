@@ -12,16 +12,8 @@ spec:
     metadata:
       labels:
         app: springdemo
-#    spec:
-#      containers:
-#        - name: springdemo
-#          image: __IMAGE__@__DIGEST__
-#          ports:
-#            - name: http-server
-#              containerPort: 8080
     spec:
       containers:
-      # - image: us.icr.io/narasimha_ns/storm-tracker:0.0.2-SNAPSHOT
       - image: __IMAGE__@__DIGEST__
         imagePullPolicy: Always
         name: springdemo
