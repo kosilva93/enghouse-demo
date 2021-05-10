@@ -12,13 +12,38 @@ spec:
     metadata:
       labels:
         app: springdemo
+#    spec:
+#      containers:
+#        - name: springdemo
+#          image: __IMAGE__@__DIGEST__
+#          ports:
+#            - name: http-server
+#              containerPort: 8080
     spec:
       containers:
-        - name: springdemo
-          image: __IMAGE__@__DIGEST__
-          ports:
-            - name: http-server
-              containerPort: 8080
+      # - image: us.icr.io/narasimha_ns/storm-tracker:0.0.2-SNAPSHOT
+      - image: __IMAGE__@__DIGEST__
+        imagePullPolicy: Always
+        name: springdemo
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        args: ["--spring.application.json=$(BINDING)"]
+        env:
+        - name: BINDING
+          valueFrom:
+            secretKeyRef:
+              name: binding-kos-enghouse-demo
+              key: binding
+        volumeMounts:
+          # name must match the volume name below
+          - name: secret-volume
+            mountPath: /.postgresql/
+            readOnly: true
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: cert-secret
 ---
 apiVersion: v1
 kind: Service
