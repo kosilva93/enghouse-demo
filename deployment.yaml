@@ -51,6 +51,15 @@ spec:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        volumeMounts:
+        # name must match the volume name below
+        - name: secret-volume
+          mountPath: /.postgresql/
+          readOnly: true
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: cert-secret
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
