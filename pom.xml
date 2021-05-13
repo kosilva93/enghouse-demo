@@ -33,17 +33,21 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 		<dependency>
-        <groupId>org.javassist</groupId>
-        <artifactId>javassist</artifactId>
-        <version>3.27.0-GA</version>
-    </dependency>
-    <dependency>
-    <groupId>javax.xml.bind</groupId>
-    <artifactId>jaxb-api</artifactId>
-    <version>2.3.0</version>
-</dependency>
+        		<groupId>org.javassist</groupId>
+        		<artifactId>javassist</artifactId>
+        		<version>3.27.0-GA</version>
+    		</dependency>
+    		<dependency>
+    			<groupId>javax.xml.bind</groupId>
+    			<artifactId>jaxb-api</artifactId>
+    			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+    			<groupId>com.edb</groupId>
+    			<artifactId>edb-jdbc14</artifactId>
+    			<version>8.3.0.12</version>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<finalName>demo-enghouse</finalName>
 		<plugins>
