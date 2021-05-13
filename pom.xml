@@ -29,10 +29,10 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-            		<groupId>com.edb.Driver</groupId>
-            		<artifactId>edb</artifactId>
-            		<version>14</version>
-        	</dependency>
+    			<groupId>com.edb</groupId>
+    			<artifactId>edb-jdbc14</artifactId>
+			<version>8.3.0.12</version>
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
